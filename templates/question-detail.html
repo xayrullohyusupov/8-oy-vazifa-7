@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .bg-gradient-primary {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            transition: background-color 0.3s ease;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            transition: background-color 0.3s ease;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+        .option-button {
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+        .list-group-item-action {
+            border: none;
+            border-radius: 0.25rem;
+        }
+        .list-group-item-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .list-group-item-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .animated.pulse {
+            animation: pulse 1s;
+        }
+        .animated.shake {
+            animation: shake 0.5s;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-gradient-primary text-white">
+                <h3 class="mb-0">{{ question.name }}</h3>
+            </div>
+            <div class="card-body">
+                <h4 class="mb-4 text-secondary">Options:</h4>
+                {% if options %}
+                <div class="list-group">
+                    {% for option in options %}
+                    <button type="button" class="list-group-item list-group-item-action option-button rounded mb-2" data-correct="{{ option.correct }}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span>{{ option.name }}</span>
+                            {% if option.correct %}
+                            <span class="badge badge-success badge-pill">To'g'ri</span>
+                            {% endif %}
+                            <a href="{% url 'optionDelete' option.id %}" class="btn btn-danger btn-sm ml-2" title="O'chirish" onclick="return confirm('Optionni o\'chirishni tasdiqlaysizmi?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </button>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">Hozircha hech qanday option qo'shilmagan.</p>
+                {% endif %}
+            </div>
+            <div class="card-footer text-right">
+                <a href="{% url 'optionCreate' question.id %}" class="btn btn-success shadow">
+                    <i class="fas fa-plus"></i> Yangi Option Qo'shish
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.querySelectorAll('.option-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const isCorrect = this.getAttribute('data-correct') === 'True';
+                if (isCorrect) {
+                    this.classList.add('list-group-item-success', 'text-white', 'animated', 'pulse');
+                    this.classList.remove('list-group-item-danger');
+                } else {
+                    this.classList.add('list-group-item-danger', 'text-white', 'animated', 'shake');
+                    this.classList.remove('list-group-item-success');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

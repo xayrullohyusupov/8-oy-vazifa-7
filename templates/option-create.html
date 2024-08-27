@@ -1,0 +1,6 @@
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Option nomi" required>
+    <input type="checkbox" name="correct"> To'g'ri javobmi?
+    <button type="submit">Yaratish</button>
+</form>
